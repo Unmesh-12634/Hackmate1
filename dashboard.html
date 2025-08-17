@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Dashboard - HackMate</title>
+    <meta name="description" content="Manage your hackathon team's progress, tasks, and collaboration in real-time.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="teams.html" class="btn btn-ghost" style="padding: 0.5rem;" title="Back to Teams">
+                    <i data-lucide="arrow-left" style="width: 1.25rem; height: 1.25rem;"></i>
+                </a>
+                <div>
+                    <h1 style="font-size: 1.25rem; font-weight: 600; margin: 0; color: var(--foreground);">Team Dashboard</h1>
+                    <span id="team-badge" class="badge" style="margin-top: 0.25rem;">Loading...</span>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <button class="btn btn-ghost" title="Search" onclick="showSearchModal()">
+                    <i data-lucide="search" style="width: 1.25rem; height: 1.25rem;"></i>
+                </button>
+                <button class="btn btn-ghost" title="Notifications" onclick="showNotifications()" style="position: relative;">
+                    <i data-lucide="bell" style="width: 1.25rem; height: 1.25rem;"></i>
+                    <span id="notification-count" class="notification-badge" style="display: none;">2</span>
+                </button>
+                <button class="btn btn-ghost" onclick="logout()">
+                    <i data-lucide="log-out" style="width: 1.25rem; height: 1.25rem;"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container" style="padding: 1.5rem;">
+        <!-- Team Header Info -->
+        <div class="card" style="padding: 1.5rem; margin-bottom: 2rem; background: linear-gradient(135deg, var(--primary) 0%, hsl(262.1, 83.3%, 65%) 100%); color: var(--primary-foreground); border: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <h2 id="team-name" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem;">Team Name</h2>
+                    <p id="team-description" style="opacity: 0.9; margin-bottom: 0.5rem;">Team description</p>
+                    <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.875rem;">
+                        <span id="hackathon-name">Hackathon Name</span>
+                        <span>•</span>
+                        <span id="team-member-count">0 members</span>
+                        <span>•</span>
+                        <span id="team-created-date">Created today</span>
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <button class="btn btn-secondary" onclick="showInviteModal()" style="margin-bottom: 0.5rem;">
+                        <i data-lucide="user-plus" style="width: 1rem; height: 1rem;"></i>
+                        Invite Members
+                    </button>
+                    <div id="invite-code-display" style="font-size: 0.875rem; opacity: 0.9;">
+                        Code: <span id="invite-code">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Overview -->
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Project Progress</h2>
+                    <p class="card-description" id="progress-description">Overall team progress</p>
+                </div>
+                <div class="card-content">
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                            <span style="font-weight: 600;">Overall Progress</span>
+                            <span id="progress-percentage" style="font-weight: 600; color: var(--primary);">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; text-align: center;">
+                        <div style="padding: 1rem; background: var(--muted); border-radius: var(--radius);">
+                            <div id="completed-tasks" style="font-size: 2rem; font-weight: 800; color: #10B981; margin-bottom: 0.25rem;">0</div>
+                            <div style="font-size: 0.875rem; color: var(--muted-foreground); font-weight: 500;">Completed</div>
+                        </div>
+                        <div style="padding: 1rem; background: var(--muted); border-radius: var(--radius);">
+                            <div id="in-progress-tasks" style="font-size: 2rem; font-weight: 800; color: #F59E0B; margin-bottom: 0.25rem;">0</div>
+                            <div style="font-size: 0.875rem; color: var(--muted-foreground); font-weight: 500;">In Progress</div>
+                        </div>
+                        <div style="padding: 1rem; background: var(--muted); border-radius: var(--radius);">
+                            <div id="pending-tasks" style="font-size: 2rem; font-weight: 800; color: var(--muted-foreground); margin-bottom: 0.25rem;">0</div>
+                            <div style="font-size: 0.875rem; color: var(--muted-foreground); font-weight: 500;">Pending</div>
+                        </div>
+                    </div>
+                    <div id="no-tasks-message" style="text-align: center; padding: 2rem 0; display: none;">
+                        <i data-lucide="check-square" style="width: 3rem; height: 3rem; color: var(--muted-foreground); margin-bottom: 1rem;"></i>
+                        <p style="color: var(--muted-foreground); margin-bottom: 1rem;">No tasks created yet!</p>
+                        <button class="btn btn-primary" onclick="window.location.href='tasks.html?team=' + getTeamId()">Create First Task</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Project Deadline</h2>
+                    <p class="card-description" id="deadline-description">Track your submission deadline</p>
+                </div>
+                <div class="card-content" style="text-align: center;">
+                    <div id="countdown-display" style="font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 0.5rem; line-height: 1.1;">
+                        No deadline set
+                    </div>
+                    <div id="countdown-labels" style="font-size: 0.75rem; color: var(--muted-foreground); display: none; margin-bottom: 1rem;">
+                        Days : Hours : Minutes : Seconds
+                    </div>
+                    <button class="btn btn-outline" style="width: 100%;" onclick="showDeadlineModal()">
+                        <i data-lucide="calendar" style="width: 1rem; height: 1rem;"></i>
+                        Set Deadline
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity & Team Members -->
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+            <div class="card">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h2 class="card-title">Recent Activity</h2>
+                        <p class="card-description">Latest team updates and progress</p>
+                    </div>
+                    <button class="btn btn-ghost" onclick="refreshActivity()">
+                        <i data-lucide="refresh-cw" style="width: 1rem; height: 1rem;"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div id="activity-feed">
+                        <!-- Activity items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h2 class="card-title">Team Members</h2>
+                        <p class="card-description" id="members-count">Loading...</p>
+                    </div>
+                    <button class="btn btn-ghost" onclick="showAddMemberModal()">
+                        <i data-lucide="user-plus" style="width: 1rem; height: 1rem;"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div id="team-members-list">
+                        <!-- Team members will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Your Tasks -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h2 class="card-title">Your Tasks</h2>
+                    <p class="card-description">Tasks assigned to you</p>
+                </div>
+                <a href="#" onclick="window.location.href='tasks.html?team=' + getTeamId()" class="btn btn-primary">
+                    <i data-lucide="plus" style="width: 1rem; height: 1rem;"></i>
+                    Manage Tasks
+                </a>
+            </div>
+            <div class="card-content">
+                <div id="user-tasks-list">
+                    <!-- User tasks will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Access -->
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Quick Access</h2>
+                <p class="card-description">Jump to different team tools</p>
+            </div>
+            <div class="card-content">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div class="quick-access-item" onclick="window.location.href='chat.html?team=' + getTeamId()">
+                        <i data-lucide="message-square" style="width: 2rem; height: 2rem; color: var(--primary);"></i>
+                        <div>
+                            <div style="font-weight: 600;">Team Chat</div>
+                            <div style="font-size: 0.875rem; color: var(--muted-foreground);">Collaborate in real-time</div>
+                        </div>
+                    </div>
+                    <div class="quick-access-item" onclick="window.location.href='resources.html?team=' + getTeamId()">
+                        <i data-lucide="file-text" style="width: 2rem; height: 2rem; color: var(--primary);"></i>
+                        <div>
+                            <div style="font-weight: 600;">Resources</div>
+                            <div style="font-size: 0.875rem; color: var(--muted-foreground);">Files, links & assets</div>
+                        </div>
+                    </div>
+                    <div class="quick-access-item" onclick="showComingSoon('Calendar')">
+                        <i data-lucide="calendar" style="width: 2rem; height: 2rem; color: var(--primary);"></i>
+                        <div>
+                            <div style="font-weight: 600;">Schedule</div>
+                            <div style="font-size: 0.875rem; color: var(--muted-foreground);">Team calendar</div>
+                        </div>
+                    </div>
+                    <div class="quick-access-item" onclick="window.location.href='chat.html?team=' + getTeamId()">
+                        <i data-lucide="bot" style="width: 2rem; height: 2rem; color: var(--primary);"></i>
+                        <div>
+                            <div style="font-weight: 600;">AI Assistant</div>
+                            <div style="font-size: 0.875rem; color: var(--muted-foreground);">Get help & insights</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deadline Modal -->
+    <div id="deadline-modal" class="modal" style="display: none;">
+        <div class="modal-content card" style="max-width: 400px; margin: 2rem auto; padding: 2rem;">
+            <div class="card-header" style="text-align: center; margin-bottom: 1.5rem;">
+                <h2 class="card-title">Set Project Deadline</h2>
+                <p class="card-description">Set the submission deadline for your team project</p>
+            </div>
+            <form id="deadline-form" class="form">
+                <div class="form-group">
+                    <label for="deadline-date">Deadline Date</label>
+                    <input type="date" id="deadline-date" required>
+                </div>
+                <div class="form-group">
+                    <label for="deadline-time">Deadline Time</label>
+                    <input type="time" id="deadline-time" required>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-outline btn-full" onclick="hideDeadlineModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i data-lucide="check" style="width: 1rem; height: 1rem;"></i>
+                        Set Deadline
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div id="add-member-modal" class="modal" style="display: none;">
+        <div class="modal-content card" style="max-width: 400px; margin: 2rem auto; padding: 2rem;">
+            <div class="card-header" style="text-align: center; margin-bottom: 1.5rem;">
+                <h2 class="card-title">Add Team Member</h2>
+                <p class="card-description">Invite a new member to join your team</p>
+            </div>
+            <form id="add-member-form" class="form">
+                <div class="form-group">
+                    <label for="member-email">Email Address</label>
+                    <input type="email" id="member-email" placeholder="member@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="member-name">Full Name</label>
+                    <input type="text" id="member-name" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="member-role">Role</label>
+                    <select id="member-role" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--background);">
+                        <option value="Developer">Developer</option>
+                        <option value="Designer">Designer</option>
+                        <option value="Team Member">Team Member</option>
+                        <option value="Researcher">Researcher</option>
+                        <option value="Product Manager">Product Manager</option>
+                    </select>
+                </div>
+                <div style="background: var(--muted); padding: 1rem; border-radius: var(--radius); margin: 1rem 0;">
+                    <div style="display: flex; align-items: start; gap: 0.75rem;">
+                        <i data-lucide="mail" style="width: 1.25rem; height: 1.25rem; color: var(--primary); margin-top: 0.125rem;"></i>
+                        <div>
+                            <div style="font-weight: 600; color: var(--foreground); margin-bottom: 0.25rem;">Invitation</div>
+                            <div style="font-size: 0.875rem; color: var(--muted-foreground);">
+                                In a real app, this would send an email invitation to the member.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-outline btn-full" onclick="hideAddMemberModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i data-lucide="user-plus" style="width: 1rem; height: 1rem;"></i>
+                        Add Member
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Invite Modal -->
+    <div id="invite-modal" class="modal" style="display: none;">
+        <div class="modal-content card" style="max-width: 500px; margin: 2rem auto; padding: 2rem;">
+            <div class="card-header" style="text-align: center; margin-bottom: 1.5rem;">
+                <h2 class="card-title">Invite Team Members</h2>
+                <p class="card-description">Share this code with potential team members</p>
+            </div>
+            <div style="text-align: center;">
+                <div style="background: var(--muted); padding: 1.5rem; border-radius: var(--radius); margin-bottom: 1.5rem;">
+                    <div style="font-size: 0.875rem; color: var(--muted-foreground); margin-bottom: 0.5rem;">Invitation Code</div>
+                    <div id="invite-code-large" style="font-size: 1.5rem; font-weight: 800; color: var(--primary); font-family: monospace; letter-spacing: 0.1em;">LOADING...</div>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-outline btn-full" onclick="copyInviteCode()">
+                        <i data-lucide="copy" style="width: 1rem; height: 1rem;"></i>
+                        Copy Code
+                    </button>
+                    <button class="btn btn-primary btn-full" onclick="shareInviteCode()">
+                        <i data-lucide="share" style="width: 1rem; height: 1rem;"></i>
+                        Share
+                    </button>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <button class="btn btn-ghost" onclick="hideInviteModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Check authentication and load data
+        if (!localStorage.getItem('isLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+
+        let currentUser = JSON.parse(localStorage.getItem('user'));
+        let currentTeam = null;
+        let countdownInterval = null;
+
+        function getTeamId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('team');
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            localStorage.removeItem('isLoggedIn');
+            showToast('Signed out successfully', 'success');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+        }
+
+        function showDeadlineModal() {
+            document.getElementById('deadline-modal').style.display = 'block';
+        }
+
+        function hideDeadlineModal() {
+            document.getElementById('deadline-modal').style.display = 'none';
+        }
+
+        function showAddMemberModal() {
+            document.getElementById('add-member-modal').style.display = 'block';
+        }
+
+        function hideAddMemberModal() {
+            document.getElementById('add-member-modal').style.display = 'none';
+            document.getElementById('add-member-form').reset();
+        }
+
+        function showInviteModal() {
+            if (currentTeam) {
+                document.getElementById('invite-code-large').textContent = currentTeam.inviteCode || 'N/A';
+                document.getElementById('invite-modal').style.display = 'block';
+            }
+        }
+
+        function hideInviteModal() {
+            document.getElementById('invite-modal').style.display = 'none';
+        }
+
+        function showNotifications() {
+            const notifications = [
+                "📝 New task assigned: API Integration",
+                "✅ Alice completed UI Design Review", 
+                "⏰ Team deadline approaching in 2 days",
+                "🎯 Project milestone reached!"
+            ];
+            
+            showToast(notifications.join('\n'), 'info');
+        }
+
+        function showSearchModal() {
+            showToast('Search functionality coming soon!', 'info');
+        }
+
+        function showComingSoon(feature) {
+            showToast(`${feature} feature coming soon!`, 'info');
+        }
+
+        function loadTeamData() {
+            const teamId = getTeamId();
+            if (!teamId) {
+                window.location.href = 'teams.html';
+                return;
+            }
+
+            currentTeam = currentUser.teams?.find(t => t.id.toString() === teamId);
+            if (!currentTeam) {
+                window.location.href = 'teams.html';
+                return;
+            }
+
+            // Update page elements
+            document.getElementById('team-badge').textContent = currentTeam.name;
+            document.getElementById('team-name').textContent = currentTeam.name;
+            document.getElementById('team-description').textContent = currentTeam.description || 'No description';
+            document.getElementById('hackathon-name').textContent = currentTeam.hackathon;
+            document.getElementById('invite-code').textContent = currentTeam.inviteCode || 'N/A';
+            document.getElementById('team-created-date').textContent = `Created ${new Date(currentTeam.createdAt).toLocaleDateString()}`;
+            
+            const memberCount = currentTeam.members?.length || 1;
+            document.getElementById('team-member-count').textContent = `${memberCount} member${memberCount !== 1 ? 's' : ''}`;
+            
+            document.getElementById('progress-description').textContent = `Overall team progress for ${currentTeam.name}`;
+
+            loadProjectProgress();
+            loadDeadline();
+            loadTeamMembers();
+            loadUserTasks();
+            loadActivityFeed();
+        }
+
+        function loadProjectProgress() {
+            const tasks = currentTeam.tasks || [];
+            const totalTasks = tasks.length;
+            const completedTasks = tasks.filter(t => t.status === 'completed').length;
+            const inProgressTasks = tasks.filter(t => t.status === 'in_progress').length;
+            const pendingTasks = tasks.filter(t => t.status === 'pending').length;
+            const progress = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+            document.getElementById('progress-percentage').textContent = `${progress}%`;
+            document.getElementById('progress-fill').style.width = `${progress}%`;
+            document.getElementById('completed-tasks').textContent = completedTasks;
+            document.getElementById('in-progress-tasks').textContent = inProgressTasks;
+            document.getElementById('pending-tasks').textContent = pendingTasks;
+
+            if (totalTasks === 0) {
+                document.getElementById('no-tasks-message').style.display = 'block';
+            }
+        }
+
+        function loadDeadline() {
+            if (currentTeam.projectDeadline) {
+                document.getElementById('deadline-description').textContent = 'Time remaining until submission';
+                document.getElementById('countdown-labels').style.display = 'block';
+                startCountdown();
+            }
+        }
+
+        function startCountdown() {
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            function updateCountdown() {
+                const deadline = new Date(currentTeam.projectDeadline);
+                const now = new Date();
+                const difference = deadline.getTime() - now.getTime();
+
+                if (difference > 0) {
+                    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                    document.getElementById('countdown-display').innerHTML = 
+                        `${days}<br><span style="font-size: 0.5em; opacity: 0.8;">days</span> : ${hours.toString().padStart(2, '0')}<br><span style="font-size: 0.5em; opacity: 0.8;">hours</span>`;
+                    document.getElementById('countdown-display').style.color = 'var(--primary)';
+                } else {
+                    document.getElementById('countdown-display').textContent = "Time's up!";
+                    document.getElementById('countdown-display').style.color = 'var(--destructive)';
+                }
+            }
+
+            updateCountdown();
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+
+        function loadTeamMembers() {
+            const members = currentTeam.members || [];
+            const membersCount = document.getElementById('members-count');
+            const membersList = document.getElementById('team-members-list');
+
+            membersCount.textContent = `${members.length} member${members.length !== 1 ? 's' : ''}`;
+
+            if (members.length === 0) {
+                membersList.innerHTML = '<p style="color: var(--muted-foreground); text-align: center; padding: 1rem;">No members yet</p>';
+                return;
+            }
+
+            membersList.innerHTML = members.map(member => `
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; padding: 0.75rem; background: var(--muted); border-radius: var(--radius);">
+                    <div style="width: 2.5rem; height: 2.5rem; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary-foreground); font-weight: 600; font-size: 0.875rem;">
+                        ${(member.name || 'U').split(' ').map(n => n[0]).join('')}
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.125rem;">${member.name || 'Unknown'}</div>
+                        <div style="font-size: 0.875rem; color: var(--muted-foreground);">${member.role || 'Member'}</div>
+                    </div>
+                    <div style="width: 0.5rem; height: 0.5rem; background: #10B981; border-radius: 50%;" title="Online"></div>
+                </div>
+            `).join('');
+        }
+
+        function loadUserTasks() {
+            const tasks = currentTeam.tasks || [];
+            const userTasks = tasks.filter(t => t.assignee === currentUser.email && t.status !== 'completed').slice(0, 3);
+            const userTasksList = document.getElementById('user-tasks-list');
+
+            if (userTasks.length === 0) {
+                userTasksList.innerHTML = `
+                    <div style="text-align: center; padding: 2rem 0;">
+                        <i data-lucide="check-square" style="width: 3rem; height: 3rem; color: var(--muted-foreground); margin-bottom: 1rem;"></i>
+                        <p style="color: var(--muted-foreground); margin-bottom: 1rem;">No tasks assigned to you</p>
+                        <p style="font-size: 0.875rem; color: var(--muted-foreground);">
+                            ${currentUser.email === currentTeam.createdBy ? "Create tasks for your team!" : "Your team leader will assign tasks to you."}
+                        </p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            userTasksList.innerHTML = userTasks.map(task => {
+                const isOverdue = new Date(task.dueDate) < new Date();
+                return `
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 0.75rem; background: var(--card);">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <i data-lucide="${task.status === 'in_progress' ? 'clock' : 'circle'}" style="width: 1.25rem; height: 1.25rem; color: ${task.status === 'in_progress' ? '#F59E0B' : 'var(--muted-foreground)'};"></i>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 0.25rem;">${task.title}</div>
+                                <div style="font-size: 0.875rem; color: ${isOverdue ? '#EF4444' : 'var(--muted-foreground)'};">
+                                    Due ${new Date(task.dueDate).toLocaleDateString()}
+                                    ${isOverdue ? '(Overdue)' : ''}
+                                </div>
+                            </div>
+                        </div>
+                        <span class="badge" style="background: ${task.priority === 'high' ? '#EF4444' : task.priority === 'medium' ? '#F59E0B' : '#10B981'}; color: white; font-size: 0.75rem;">
+                            ${task.priority}
+                        </span>
+                    </div>
+                `;
+            }).join('');
+
+            lucide.createIcons();
+        }
+
+        function loadActivityFeed() {
+            const activities = [
+                {
+                    type: 'task_completed',
+                    user: 'Alice Johnson',
+                    action: 'completed task "UI Design Review"',
+                    time: '2 hours ago',
+                    icon: 'check-circle'
+                },
+                {
+                    type: 'member_joined',
+                    user: 'Bob Smith',
+                    action: 'joined the team',
+                    time: '1 day ago',
+                    icon: 'user-plus'
+                },
+                {
+                    type: 'task_created',
+                    user: 'You',
+                    action: 'created task "API Integration"',
+                    time: '2 days ago',
+                    icon: 'plus-circle'
+                },
+                {
+                    type: 'deadline_set',
+                    user: 'Team Leader',
+                    action: 'set project deadline',
+                    time: '3 days ago',
+                    icon: 'calendar'
+                }
+            ];
+
+            const activityFeed = document.getElementById('activity-feed');
+            
+            if (activities.length === 0) {
+                activityFeed.innerHTML = '<p style="color: var(--muted-foreground); text-align: center; padding: 1rem;">No recent activity</p>';
+                return;
+            }
+
+            activityFeed.innerHTML = activities.map(activity => `
+                <div style="display: flex; align-items: start; gap: 0.75rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); last-child:border-bottom: none;">
+                    <div style="width: 2rem; height: 2rem; background: var(--muted); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <i data-lucide="${activity.icon}" style="width: 1rem; height: 1rem; color: var(--primary);"></i>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 0.875rem; margin-bottom: 0.25rem;">
+                            <span style="font-weight: 600;">${activity.user}</span> ${activity.action}
+                        </div>
+                        <div style="font-size: 0.75rem; color: var(--muted-foreground);">${activity.time}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function refreshActivity() {
+            loadActivityFeed();
+            showToast('Activity refreshed!', 'success');
+        }
+
+        function copyInviteCode() {
+            const code = currentTeam.inviteCode;
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(code).then(() => {
+                    showToast('Invite code copied to clipboard!', 'success');
+                });
+            } else {
+                showToast(`Invite code: ${code}`, 'info');
+            }
+        }
+
+        function shareInviteCode() {
+            const code = currentTeam.inviteCode;
+            const text = `Join my team "${currentTeam.name}" on HackMate! Use invite code: ${code}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Join my HackMate team',
+                    text: text
+                });
+            } else {
+                copyInviteCode();
+            }
+        }
+
+        // Handle deadline form
+        document.getElementById('deadline-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const date = document.getElementById('deadline-date').value;
+            const time = document.getElementById('deadline-time').value;
+            
+            if (!date || !time) return;
+            
+            const deadline = new Date(`${date}T${time}`);
+            currentTeam.projectDeadline = deadline.toISOString();
+            
+            // Update localStorage
+            currentUser.teams = currentUser.teams.map(team => 
+                team.id === currentTeam.id ? currentTeam : team
+            );
+            localStorage.setItem('user', JSON.stringify(currentUser));
+            
+            hideDeadlineModal();
+            loadDeadline();
+            showToast('Project deadline set successfully!', 'success');
+        });
+
+        // Handle add member form
+        document.getElementById('add-member-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('member-email').value.trim();
+            const name = document.getElementById('member-name').value.trim();
+            const role = document.getElementById('member-role').value;
+            
+            if (!email || !name) return;
+            
+            const newMember = {
+                id: email,
+                name: name,
+                email: email,
+                role: role,
+                joinedAt: new Date().toISOString()
+            };
+            
+            if (!currentTeam.members) currentTeam.members = [];
+            currentTeam.members.push(newMember);
+            
+            // Update localStorage
+            currentUser.teams = currentUser.teams.map(team => 
+                team.id === currentTeam.id ? currentTeam : team
+            );
+            localStorage.setItem('user', JSON.stringify(currentUser));
+            
+            hideAddMemberModal();
+            loadTeamMembers();
+            showToast(`${name} added to the team!`, 'success');
+        });
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'error' ? '#EF4444' : type === 'success' ? '#10B981' : '#3B82F6'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 10000;
+                font-family: inherit;
+                font-size: 14px;
+                max-width: 300px;
+                word-wrap: break-word;
+                opacity: 0;
+                transform: translateX(100%);
+                transition: all 0.3s ease;
+                white-space: pre-line;
+            `;
+            
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(0)';
+            }, 10);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 4000);
+        }
+
+        // Load team data on page load
+        document.addEventListener('DOMContentLoaded', loadTeamData);
+    </script>
+
+    <style>
+        .quick-access-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--muted);
+        }
+        
+        .quick-access-item:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        @media (max-width: 768px) {
+            .container > div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .quick-access-item {
+                justify-content: center;
+                text-align: center;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</body>
+</html>

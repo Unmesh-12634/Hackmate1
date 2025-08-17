@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - HackMate</title>
+    <meta name="description" content="Manage your user profile and settings on HackMate.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="nav-brand">
+                <div class="nav-logo">
+                    <i data-lucide="zap"></i>
+                </div>
+                <span class="nav-title">HackMate</span>
+            </a>
+            <nav class="nav-menu">
+                <a href="teams.html" class="nav-link">My Teams</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="btn btn-ghost" onclick="showUserMenu()" style="position: relative;">
+                    <i data-lucide="user"></i>
+                    <span id="user-name">User</span>
+                    <i data-lucide="chevron-down" style="width: 1rem; height: 1rem;"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- User Menu Dropdown -->
+    <div id="user-menu" class="user-menu" style="display: none; position: absolute; top: 4rem; right: 2rem; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-lg); z-index: 100; min-width: 200px;">
+        <div style="padding: 0.75rem; border-bottom: 1px solid var(--border);">
+            <div style="font-weight: 600; color: var(--foreground);" id="menu-user-name">User</div>
+            <div style="font-size: 0.875rem; color: var(--muted-foreground);" id="menu-user-email">user@example.com</div>
+        </div>
+        <div style="padding: 0.5rem;">
+            <a href="profile.html" class="btn btn-ghost" style="width: 100%; justify-content: start; padding: 0.5rem 0.75rem;">
+                <i data-lucide="user" style="width: 1rem; height: 1rem;"></i>
+                Profile Settings
+            </a>
+            <button class="btn btn-ghost" style="width: 100%; justify-content: start; padding: 0.5rem 0.75rem;" onclick="showPreferencesModal()">
+                <i data-lucide="settings" style="width: 1rem; height: 1rem;"></i>
+                Preferences
+            </button>
+            <hr style="margin: 0.5rem 0; border: none; border-top: 1px solid var(--border);">
+            <button class="btn btn-ghost" style="width: 100%; justify-content: start; padding: 0.5rem 0.75rem; color: var(--destructive);" onclick="logout()">
+                <i data-lucide="log-out" style="width: 1rem; height: 1rem;"></i>
+                Sign Out
+            </button>
+        </div>
+    </div>
+
+    <div class="container" style="padding: 2rem;">
+        <div style="max-width: 800px; margin: 2rem auto;">
+            <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
+                <h1 style="font-size: 2rem; font-weight: 700;">Profile Settings</h1>
+                <p style="font-size: 1rem; color: var(--muted-foreground);">Manage your public profile and account details.</p>
+            </div>
+
+            <div class="profile-layout">
+                <!-- Left Sidebar for Tabs -->
+                <aside class="profile-tabs">
+                    <nav>
+                        <a href="#profile" class="profile-tab-link active">
+                            <i data-lucide="user-circle"></i>
+                            <span>Profile</span>
+                        </a>
+                        <a href="#account" class="profile-tab-link">
+                            <i data-lucide="settings-2"></i>
+                            <span>Account</span>
+                        </a>
+                        <a href="#security" class="profile-tab-link">
+                             <i data-lucide="shield"></i>
+                            <span>Security</span>
+                        </a>
+                        <a href="#notifications" class="profile-tab-link">
+                             <i data-lucide="bell"></i>
+                            <span>Notifications</span>
+                        </a>
+                    </nav>
+                </aside>
+
+                <!-- Main Content Area -->
+                <main class="profile-content">
+                    <!-- Profile Section -->
+                    <div id="profile" class="profile-tab-content active">
+                        <div class="card" style="border: none; box-shadow: none;">
+                             <div class="card-header" style="padding: 0 0 1.5rem 0; border-bottom: 1px solid var(--border);">
+                                <h2 class="card-title">Public Profile</h2>
+                                <p class="card-description">This information will be displayed publicly.</p>
+                            </div>
+                            <div class="card-content" style="padding: 1.5rem 0 0 0;">
+                                <form class="form" id="profile-form">
+                                    <div class="form-group" style="flex-direction: row; align-items: center; gap: 1.5rem;">
+                                        <img src="https://placehold.co/96x96/E2E8F0/475569?text=User" alt="User Avatar" id="user-avatar-preview" class="avatar">
+                                        <div>
+                                            <input type="file" id="avatar-upload" class="hidden" accept="image/*">
+                                            <button type="button" class="btn btn-outline" onclick="document.getElementById('avatar-upload').click();">
+                                                <i data-lucide="upload"></i>
+                                                Change Avatar
+                                            </button>
+                                            <p style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.5rem;">JPG, GIF or PNG. 1MB max.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="profile-name">Full Name</label>
+                                        <input type="text" id="profile-name" placeholder="Your Name" value="Demo User">
+                                    </div>
+                                    
+                                     <div class="form-group">
+                                        <label for="profile-bio">Bio</label>
+                                        <textarea id="profile-bio" placeholder="Tell us a little about yourself" rows="4">A passionate developer interested in building cool things.</textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="profile-skills">Skills</label>
+                                        <input type="text" id="profile-skills" placeholder="e.g., JavaScript, React, Node.js" value="JavaScript, HTML, CSS, Figma">
+                                        <p style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.25rem;">Separate skills with a comma.</p>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="profile-url">Website URL</label>
+                                        <input type="url" id="profile-url" placeholder="https://your-website.com" value="https://example.com">
+                                    </div>
+
+                                    <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem;">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i data-lucide="save"></i>
+                                            Save Changes
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Section (Placeholder) -->
+                    <div id="account" class="profile-tab-content">
+                        <div class="card" style="border: none; box-shadow: none;">
+                             <div class="card-header" style="padding: 0 0 1.5rem 0; border-bottom: 1px solid var(--border);">
+                                <h2 class="card-title">Account Settings</h2>
+                                <p class="card-description">Manage your account information.</p>
+                            </div>
+                            <div class="card-content" style="padding: 2rem; text-align: center; color: var(--muted-foreground);">
+                                <i data-lucide="settings-2" style="width: 3rem; height: 3rem; margin-bottom: 1rem;"></i>
+                                <p>Account settings will be available here.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Security Section (Placeholder) -->
+                    <div id="security" class="profile-tab-content">
+                        <div class="card" style="border: none; box-shadow: none;">
+                             <div class="card-header" style="padding: 0 0 1.5rem 0; border-bottom: 1px solid var(--border);">
+                                <h2 class="card-title">Security</h2>
+                                <p class="card-description">Change your password and manage 2FA.</p>
+                            </div>
+                            <div class="card-content" style="padding: 2rem; text-align: center; color: var(--muted-foreground);">
+                                <i data-lucide="shield" style="width: 3rem; height: 3rem; margin-bottom: 1rem;"></i>
+                                <p>Security settings will be available here.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Section (Placeholder) -->
+                    <div id="notifications" class="profile-tab-content">
+                        <div class="card" style="border: none; box-shadow: none;">
+                             <div class="card-header" style="padding: 0 0 1.5rem 0; border-bottom: 1px solid var(--border);">
+                                <h2 class="card-title">Notifications</h2>
+                                <p class="card-description">Manage how you receive notifications.</p>
+                            </div>
+                            <div class="card-content" style="padding: 2rem; text-align: center; color: var(--muted-foreground);">
+                                <i data-lucide="bell" style="width: 3rem; height: 3rem; margin-bottom: 1rem;"></i>
+                                <p>Notification settings will be available here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        
+        // --- Mock User Data ---
+        // In a real app, you would fetch this from your backend
+        let currentUser = {
+            name: 'Demo User',
+            email: 'user@example.com',
+            bio: 'A passionate developer interested in building cool things.',
+            skills: 'JavaScript, HTML, CSS, Figma',
+            website: 'https://example.com',
+            avatar: 'https://placehold.co/96x96/E2E8F0/475569?text=User'
+        };
+
+        // --- Page Initialization ---
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUserInfoDisplay();
+            setupTabs();
+            setupAvatarUpload();
+            setupProfileForm();
+        });
+
+        function updateUserInfoDisplay() {
+            if (currentUser) {
+                document.getElementById('user-name').textContent = currentUser.name || 'User';
+                document.getElementById('menu-user-name').textContent = currentUser.name || 'User';
+                document.getElementById('menu-user-email').textContent = currentUser.email || '';
+            }
+        }
+
+        // --- User Menu Dropdown ---
+        function showUserMenu() {
+            const menu = document.getElementById('user-menu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('user-menu');
+            const button = e.target.closest('[onclick="showUserMenu()"]');
+            if (menu && !button && !menu.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        function logout() {
+            showToast('Signed out successfully', 'success');
+        }
+        
+        function showPreferencesModal() {
+            showToast('Preferences coming soon!', 'info');
+        }
+
+        // --- Profile Page Tabs ---
+        function setupTabs() {
+            const tabLinks = document.querySelectorAll('.profile-tab-link');
+            const tabContents = document.querySelectorAll('.profile-tab-content');
+
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href').substring(1);
+
+                    tabLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+
+                    tabContents.forEach(content => {
+                        if (content.id === targetId) {
+                            content.classList.add('active');
+                        } else {
+                            content.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        }
+
+        // --- Avatar Upload Logic ---
+        function setupAvatarUpload() {
+            const uploadInput = document.getElementById('avatar-upload');
+            const previewImg = document.getElementById('user-avatar-preview');
+
+            uploadInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImg.src = e.target.result;
+                        currentUser.avatar = e.target.result;
+                        showToast('Avatar updated. Click "Save Changes" to apply.', 'info');
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        }
+
+        // --- Profile Form Logic ---
+        function setupProfileForm() {
+            const form = document.getElementById('profile-form');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Simulate saving data
+                currentUser.name = document.getElementById('profile-name').value;
+                currentUser.bio = document.getElementById('profile-bio').value;
+                currentUser.skills = document.getElementById('profile-skills').value;
+                currentUser.website = document.getElementById('profile-url').value;
+
+                console.log('Updated User Data:', currentUser);
+                
+                // Update header display name
+                updateUserInfoDisplay();
+
+                showToast('Profile updated successfully!', 'success');
+            });
+        }
+
+        // --- Toast Notification ---
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: ${type === 'error' ? '#EF4444' : type === 'success' ? '#10B981' : '#3B82F6'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 10000;
+                font-family: inherit;
+                font-size: 14px;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.3s ease;
+            `;
+            
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0)';
+            }, 10);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 4000);
+        }
+    </script>
+
+    <style>
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .profile-layout {
+                grid-template-columns: 200px 1fr;
+                gap: 3rem;
+            }
+        }
+
+        .profile-tabs nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .profile-tab-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            color: var(--muted-foreground);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .profile-tab-link:hover {
+            background: var(--accent);
+            color: var(--accent-foreground);
+        }
+
+        .profile-tab-link.active {
+            background: var(--primary);
+            color: var(--primary-foreground);
+        }
+        
+        .profile-tab-link.active i {
+            color: var(--primary-foreground);
+        }
+
+        .profile-tab-content {
+            display: none;
+        }
+
+        .profile-tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .avatar {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+    </style>
+</body>
+</html>

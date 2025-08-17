@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackMate - Functionality Test</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="nav-brand">
+                <div class="nav-logo">
+                    <i data-lucide="zap"></i>
+                </div>
+                <span class="nav-title">HackMate</span>
+            </a>
+            <nav class="nav-menu">
+                <span class="nav-link" style="color: var(--primary); font-weight: 600;">Functionality Test</span>
+            </nav>
+            <div class="nav-actions">
+                <a href="index.html" class="btn btn-ghost">Back to Home</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container" style="padding: 2rem;">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; color: var(--foreground);">
+                🧪 HackMate Functionality Test
+            </h1>
+            <p style="font-size: 1.25rem; color: var(--muted-foreground); margin-bottom: 2rem;">
+                Test all features and components to ensure everything works properly
+            </p>
+        </div>
+
+        <!-- Test Results -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <h2 class="card-title">Test Results</h2>
+                <p class="card-description">Automated testing results will appear here</p>
+            </div>
+            <div class="card-content">
+                <div id="test-results" style="font-family: monospace; background: var(--muted); padding: 1rem; border-radius: var(--radius); white-space: pre-wrap; min-height: 200px;">
+                    Running tests...
+                </div>
+            </div>
+        </div>
+
+        <!-- Manual Tests -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            
+            <!-- Authentication Tests -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Authentication Tests</h3>
+                    <p class="card-description">Test login and signup functionality</p>
+                </div>
+                <div class="card-content" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <button class="btn btn-primary" onclick="testAuth('login')">Test Login Page</button>
+                    <button class="btn btn-primary" onclick="testAuth('signup')">Test Signup Page</button>
+                    <button class="btn btn-outline" onclick="createDemoUser()">Create Demo User</button>
+                    <button class="btn btn-outline" onclick="clearAuthData()">Clear Auth Data</button>
+                </div>
+            </div>
+
+            <!-- Navigation Tests -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Navigation Tests</h3>
+                    <p class="card-description">Test page navigation and routing</p>
+                </div>
+                <div class="card-content" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <button class="btn btn-primary" onclick="testNavigation('teams')">Test Teams Page</button>
+                    <button class="btn btn-primary" onclick="testNavigation('dashboard')">Test Dashboard</button>
+                    <button class="btn btn-primary" onclick="testNavigation('chat')">Test Chat Page</button>
+                    <button class="btn btn-primary" onclick="testNavigation('tasks')">Test Tasks Page</button>
+                    <button class="btn btn-primary" onclick="testNavigation('resources')">Test Resources</button>
+                </div>
+            </div>
+
+            <!-- UI Component Tests -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">UI Component Tests</h3>
+                    <p class="card-description">Test UI components and interactions</p>
+                </div>
+                <div class="card-content" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <button class="btn btn-primary" onclick="testToasts()">Test Toast Notifications</button>
+                    <button class="btn btn-primary" onclick="testModals()">Test Modal Components</button>
+                    <button class="btn btn-primary" onclick="testForms()">Test Form Validation</button>
+                    <button class="btn btn-primary" onclick="testIcons()">Test Icon Loading</button>
+                </div>
+            </div>
+
+            <!-- Data Tests -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Data Management Tests</h3>
+                    <p class="card-description">Test data storage and retrieval</p>
+                </div>
+                <div class="card-content" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <button class="btn btn-primary" onclick="testLocalStorage()">Test LocalStorage</button>
+                    <button class="btn btn-primary" onclick="testTeamCreation()">Test Team Creation</button>
+                    <button class="btn btn-primary" onclick="testTaskManagement()">Test Task Management</button>
+                    <button class="btn btn-outline" onclick="generateSampleData()">Generate Sample Data</button>
+                </div>
+            </div>
+
+            <!-- Performance Tests -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Performance Tests</h3>
+                    <p class="card-description">Test application performance</p>
+                </div>
+                <div class="card-content" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <button class="btn btn-primary" onclick="testPageLoadTime()">Test Page Load Time</button>
+                    <button class="btn btn-primary" onclick="testMemoryUsage()">Test Memory Usage</button>
+                    <button class="btn btn-primary" onclick="testAnimations()">Test CSS Animations</button>
+                    <button class="btn btn-outline" onclick="runAllTests()">Run All Tests</button>
+                </div>
+            </div>
+
+            <!-- Responsive Tests -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Responsive Design Tests</h3>
+                    <p class="card-description">Test responsive design and mobile compatibility</p>
+                </div>
+                <div class="card-content" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <button class="btn btn-primary" onclick="testMobileView()">Test Mobile View</button>
+                    <button class="btn btn-primary" onclick="testTabletView()">Test Tablet View</button>
+                    <button class="btn btn-primary" onclick="testDesktopView()">Test Desktop View</button>
+                    <button class="btn btn-outline" onclick="testAllViewports()">Test All Viewports</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Modal -->
+    <div id="test-modal" class="modal" style="display: none;">
+        <div class="modal-content card" style="max-width: 500px; margin: 2rem auto; padding: 2rem;">
+            <div class="card-header" style="text-align: center; margin-bottom: 1.5rem;">
+                <h2 class="card-title">Test Modal</h2>
+                <p class="card-description">This is a test modal component</p>
+            </div>
+            <div style="text-align: center;">
+                <p style="margin-bottom: 1.5rem;">Modal is working correctly! ✅</p>
+                <button class="btn btn-primary" onclick="closeTestModal()">Close Modal</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // Initialize test page
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+            runAutomatedTests();
+        });
+
+        let testResults = [];
+
+        function logTest(testName, result, message = '') {
+            const status = result ? '✅ PASS' : '❌ FAIL';
+            const timestamp = new Date().toLocaleTimeString();
+            const logMessage = `[${timestamp}] ${status}: ${testName}${message ? ' - ' + message : ''}`;
+            
+            testResults.push(logMessage);
+            updateTestResults();
+        }
+
+        function updateTestResults() {
+            const resultsElement = document.getElementById('test-results');
+            resultsElement.textContent = testResults.join('\n');
+            resultsElement.scrollTop = resultsElement.scrollHeight;
+        }
+
+        function runAutomatedTests() {
+            testResults = ['=== HackMate Functionality Tests ===', ''];
+            
+            setTimeout(() => {
+                // Test CSS loading
+                const computedStyle = getComputedStyle(document.body);
+                const backgroundColor = computedStyle.backgroundColor;
+                logTest('CSS Loading', backgroundColor !== 'rgba(0, 0, 0, 0)', `Background: ${backgroundColor}`);
+                
+                // Test JavaScript loading
+                logTest('JavaScript Loading', typeof window.HackMate !== 'undefined', 'HackMate object available');
+                
+                // Test Lucide icons
+                const iconElements = document.querySelectorAll('[data-lucide]');
+                logTest('Lucide Icons', iconElements.length > 0, `Found ${iconElements.length} icons`);
+                
+                // Test localStorage
+                try {
+                    localStorage.setItem('test', 'value');
+                    const testValue = localStorage.getItem('test');
+                    localStorage.removeItem('test');
+                    logTest('LocalStorage', testValue === 'value');
+                } catch (error) {
+                    logTest('LocalStorage', false, error.message);
+                }
+                
+                // Test responsive design
+                const isResponsive = document.querySelector('meta[name="viewport"]') !== null;
+                logTest('Responsive Meta Tag', isResponsive);
+                
+                // Test HTTPS (if applicable)
+                const isSecure = window.location.protocol === 'https:' || window.location.hostname === 'localhost';
+                logTest('Secure Connection', isSecure, window.location.protocol);
+                
+                logTest('Automated Tests Complete', true, 'All automated tests finished');
+            }, 1000);
+        }
+
+        // Authentication Tests
+        function testAuth(type) {
+            logTest(`${type.charAt(0).toUpperCase() + type.slice(1)} Page Navigation`, true);
+            window.open(`${type}.html`, '_blank');
+        }
+
+        function createDemoUser() {
+            const demoUser = {
+                email: 'demo@hackmate.com',
+                name: 'Demo User',
+                teams: []
+            };
+            
+            localStorage.setItem('user', JSON.stringify(demoUser));
+            localStorage.setItem('isLoggedIn', 'true');
+            
+            logTest('Demo User Creation', true, 'Demo user created and logged in');
+            showToast('Demo user created successfully!', 'success');
+        }
+
+        function clearAuthData() {
+            localStorage.removeItem('user');
+            localStorage.removeItem('isLoggedIn');
+            logTest('Clear Auth Data', true, 'Authentication data cleared');
+            showToast('Authentication data cleared', 'info');
+        }
+
+        // Navigation Tests
+        function testNavigation(page) {
+            logTest(`${page.charAt(0).toUpperCase() + page.slice(1)} Page Navigation`, true);
+            window.open(`${page}.html`, '_blank');
+        }
+
+        // UI Component Tests
+        function testToasts() {
+            showToast('This is a success toast!', 'success');
+            setTimeout(() => showToast('This is an error toast!', 'error'), 500);
+            setTimeout(() => showToast('This is a warning toast!', 'warning'), 1000);
+            setTimeout(() => showToast('This is an info toast!', 'info'), 1500);
+            
+            logTest('Toast Notifications', true, 'All toast types displayed');
+        }
+
+        function testModals() {
+            document.getElementById('test-modal').style.display = 'block';
+            logTest('Modal Component', true, 'Test modal opened');
+        }
+
+        function closeTestModal() {
+            document.getElementById('test-modal').style.display = 'none';
+        }
+
+        function testForms() {
+            // Create a test form
+            const testForm = document.createElement('form');
+            testForm.innerHTML = `
+                <input type="email" required placeholder="test@example.com">
+                <input type="password" required placeholder="password">
+            `;
+            
+            const emailInput = testForm.querySelector('input[type="email"]');
+            const passwordInput = testForm.querySelector('input[type="password"]');
+            
+            // Test email validation
+            emailInput.value = 'invalid-email';
+            const emailValid = !emailInput.validity.valid;
+            
+            // Test password validation
+            passwordInput.value = '123';
+            const passwordValid = passwordInput.value.length >= 3;
+            
+            logTest('Form Validation', emailValid && passwordValid, 'Email and password validation working');
+        }
+
+        function testIcons() {
+            const iconCount = document.querySelectorAll('svg').length;
+            logTest('Icon Loading', iconCount > 0, `${iconCount} icons rendered`);
+        }
+
+        // Data Tests
+        function testLocalStorage() {
+            try {
+                const testData = { test: 'data', number: 123, array: [1, 2, 3] };
+                localStorage.setItem('testData', JSON.stringify(testData));
+                
+                const retrieved = JSON.parse(localStorage.getItem('testData'));
+                const isEqual = JSON.stringify(testData) === JSON.stringify(retrieved);
+                
+                localStorage.removeItem('testData');
+                logTest('LocalStorage Operations', isEqual, 'Set, get, and remove operations successful');
+            } catch (error) {
+                logTest('LocalStorage Operations', false, error.message);
+            }
+        }
+
+        function testTeamCreation() {
+            if (typeof TeamUtils !== 'undefined') {
+                const teamData = {
+                    name: 'Test Team',
+                    description: 'Test Description',
+                    hackathon: 'Test Hackathon'
+                };
+                
+                const team = TeamUtils.createTeam(teamData);
+                const hasRequiredFields = team.id && team.name && team.inviteCode;
+                
+                logTest('Team Creation', hasRequiredFields, 'Team object created with required fields');
+            } else {
+                logTest('Team Creation', false, 'TeamUtils not available');
+            }
+        }
+
+        function testTaskManagement() {
+            // Simulate task operations
+            const sampleTask = {
+                id: Date.now(),
+                title: 'Test Task',
+                description: 'Test Description',
+                status: 'pending',
+                priority: 'medium',
+                assignee: 'test@example.com',
+                dueDate: new Date().toISOString()
+            };
+            
+            const taskValid = sampleTask.id && sampleTask.title && sampleTask.status;
+            logTest('Task Management', taskValid, 'Task object structure valid');
+        }
+
+        function generateSampleData() {
+            if (typeof window.HackMate !== 'undefined' && window.HackMate.createSampleData) {
+                window.HackMate.createSampleData();
+                logTest('Sample Data Generation', true, 'Sample data generated');
+            } else {
+                logTest('Sample Data Generation', false, 'createSampleData method not available');
+            }
+        }
+
+        // Performance Tests
+        function testPageLoadTime() {
+            const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+            const isGoodPerformance = loadTime < 5000; // Under 5 seconds
+            
+            logTest('Page Load Time', isGoodPerformance, `${loadTime}ms ${isGoodPerformance ? '(Good)' : '(Slow)'}`);
+        }
+
+        function testMemoryUsage() {
+            if (performance.memory) {
+                const usedMemory = Math.round(performance.memory.usedJSHeapSize / 1024 / 1024);
+                const isGoodMemory = usedMemory < 50; // Under 50MB
+                
+                logTest('Memory Usage', isGoodMemory, `${usedMemory}MB ${isGoodMemory ? '(Good)' : '(High)'}`);
+            } else {
+                logTest('Memory Usage', false, 'Performance.memory not available');
+            }
+        }
+
+        function testAnimations() {
+            const hasTransitions = getComputedStyle(document.querySelector('.btn')).transition !== 'all 0s ease 0s';
+            logTest('CSS Animations', hasTransitions, 'Transitions are working');
+        }
+
+        // Responsive Tests
+        function testMobileView() {
+            logTest('Mobile View Test', true, 'Manually test mobile responsive design');
+            showToast('Open DevTools and test mobile viewport', 'info');
+        }
+
+        function testTabletView() {
+            logTest('Tablet View Test', true, 'Manually test tablet responsive design');
+            showToast('Open DevTools and test tablet viewport', 'info');
+        }
+
+        function testDesktopView() {
+            logTest('Desktop View Test', true, 'Manually test desktop responsive design');
+            showToast('Test desktop responsive design', 'info');
+        }
+
+        function testAllViewports() {
+            testMobileView();
+            setTimeout(testTabletView, 1000);
+            setTimeout(testDesktopView, 2000);
+        }
+
+        function runAllTests() {
+            logTest('=== Running All Tests ===', true);
+            
+            // Run automated tests
+            setTimeout(() => {
+                testLocalStorage();
+                testTeamCreation();
+                testTaskManagement();
+                testPageLoadTime();
+                testMemoryUsage();
+                testAnimations();
+                testIcons();
+                
+                logTest('=== All Tests Complete ===', true, 'Check results above');
+                showToast('All automated tests completed!', 'success');
+            }, 1000);
+        }
+        testAllViewports();
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

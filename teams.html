@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Teams - HackMate</title>
+    <meta name="description" content="Manage your hackathon teams and create new projects with HackMate.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="nav-brand">
+                <div class="nav-logo">
+                    <i data-lucide="zap"></i>
+                </div>
+                <span class="nav-title">HackMate</span>
+            </a>
+            <nav class="nav-menu">
+                <span class="nav-link" style="color: var(--primary); font-weight: 600;">My Teams</span>
+            </nav>
+            <div class="nav-actions">
+                <button class="btn btn-ghost" onclick="showUserMenu()" style="position: relative;">
+                    <i data-lucide="user"></i>
+                    <span id="user-name">User</span>
+                    <i data-lucide="chevron-down" style="width: 1rem; height: 1rem;"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- User Menu Dropdown -->
+    <div id="user-menu" class="user-menu" style="display: none; position: absolute; top: 4rem; right: 2rem; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-lg); z-index: 100; min-width: 200px;">
+        <div style="padding: 0.75rem; border-bottom: 1px solid var(--border);">
+            <div style="font-weight: 600; color: var(--foreground);" id="menu-user-name">User</div>
+            <div style="font-size: 0.875rem; color: var(--muted-foreground);" id="menu-user-email">user@example.com</div>
+        </div>
+        <div style="padding: 0.5rem;">
+          <a href="profile.html" class="btn btn-ghost" style="width: 100%; justify-content: start; padding: 0.5rem 0.75rem;">
+    <i data-lucide="user" style="width: 1rem; height: 1rem;"></i>
+    Profile Settings
+    
+</a>
+            <button class="btn btn-ghost" style="width: 100%; justify-content: start; padding: 0.5rem 0.75rem;" onclick="showPreferencesModal()">
+                <i data-lucide="settings" style="width: 1rem; height: 1rem;"></i>
+                Preferences
+            </button>
+            <hr style="margin: 0.5rem 0; border: none; border-top: 1px solid var(--border);">
+            <button class="btn btn-ghost" style="width: 100%; justify-content: start; padding: 0.5rem 0.75rem; color: var(--destructive);" onclick="logout()">
+                <i data-lucide="log-out" style="width: 1rem; height: 1rem;"></i>
+                Sign Out
+            </button>
+        </div>
+    </div>
+
+    <div class="container" style="padding: 2rem;">
+        <!-- Welcome Section -->
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; color: var(--foreground); letter-spacing: -0.02em;">
+                Welcome to HackMate
+            </h1>
+            <p style="font-size: 1.25rem; color: var(--muted-foreground); margin-bottom: 2rem; max-width: 36rem; margin-left: auto; margin-right: auto; line-height: 1.6;">
+                Ready to build something amazing? Create a new team or join an existing one to get started.
+            </p>
+        </div>
+
+        <!-- Quick Stats -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;" id="quick-stats">
+            <div class="card" style="padding: 1.5rem; text-align: center; background: linear-gradient(135deg, var(--primary) 0%, hsl(262.1, 83.3%, 65%) 100%); color: var(--primary-foreground); border: none;">
+                <div style="font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem;" id="total-teams">0</div>
+                <div style="font-size: 0.875rem; opacity: 0.9;">Total Teams</div>
+            </div>
+            <div class="card" style="padding: 1.5rem; text-align: center;">
+                <div style="font-size: 2rem; font-weight: 800; color: #10B981; margin-bottom: 0.5rem;" id="active-projects">0</div>
+                <div style="font-size: 0.875rem; color: var(--muted-foreground);">Active Projects</div>
+            </div>
+            <div class="card" style="padding: 1.5rem; text-align: center;">
+                <div style="font-size: 2rem; font-weight: 800; color: #F59E0B; margin-bottom: 0.5rem;" id="total-tasks">0</div>
+                <div style="font-size: 0.875rem; color: var(--muted-foreground);">Total Tasks</div>
+            </div>
+            <div class="card" style="padding: 1.5rem; text-align: center;">
+                <div style="font-size: 2rem; font-weight: 800; color: #8B5CF6; margin-bottom: 0.5rem;" id="team-members">0</div>
+                <div style="font-size: 0.875rem; color: var(--muted-foreground);">Team Members</div>
+            </div>
+        </div>
+
+        <!-- Team Actions -->
+        <div style="display: grid; gap: 2rem; max-width: 64rem; margin: 0 auto;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                
+                <!-- Create Team Card -->
+                <div class="card team-action-card" style="padding: 2rem; text-align: center; cursor: pointer; transition: all 0.2s ease; border: 2px dashed var(--border); background: var(--muted);" onclick="showCreateTeamForm()">
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+                        <div style="width: 4rem; height: 4rem; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md);">
+                            <i data-lucide="plus" style="width: 2rem; height: 2rem; color: var(--primary-foreground);"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 1.5rem; font-weight: 600; color: var(--foreground); margin-bottom: 0.5rem;">Create New Team</h3>
+                            <p style="color: var(--muted-foreground); margin-bottom: 1.5rem; line-height: 1.5;">Start a new hackathon team and invite members to join your project</p>
+                            <div class="btn btn-primary">
+                                <i data-lucide="rocket" style="width: 1rem; height: 1rem;"></i>
+                                Create Team
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Join Team Card -->
+                <div class="card team-action-card" style="padding: 2rem; text-align: center; cursor: pointer; transition: all 0.2s ease;" onclick="showJoinTeamForm()">
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+                        <div style="width: 4rem; height: 4rem; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md);">
+                            <i data-lucide="users" style="width: 2rem; height: 2rem; color: var(--secondary-foreground);"></i>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 1.5rem; font-weight: 600; color: var(--foreground); margin-bottom: 0.5rem;">Join Existing Team</h3>
+                            <p style="color: var(--muted-foreground); margin-bottom: 1.5rem; line-height: 1.5;">Join a team using an invitation code or team link</p>
+                            <div class="btn btn-outline">
+                                <i data-lucide="user-plus" style="width: 1rem; height: 1rem;"></i>
+                                Join Team
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Teams Section -->
+            <div id="my-teams-section" style="margin-top: 3rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2 style="font-size: 1.75rem; font-weight: 700; color: var(--foreground); margin: 0;">My Teams</h2>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <select id="team-filter" style="padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--background); font-size: 0.875rem;">
+                            <option value="all">All Teams</option>
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
+                            <option value="leader">I'm Leading</option>
+                        </select>
+                        <button class="btn btn-outline" onclick="refreshTeams()">
+                            <i data-lucide="refresh-cw" style="width: 1rem; height: 1rem;"></i>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+                <div id="teams-list" style="display: grid; gap: 1.5rem;">
+                    <!-- Teams will be loaded here dynamically -->
+                </div>
+                <div id="no-teams-message" style="text-align: center; padding: 3rem 0; display: none;">
+                    <i data-lucide="users" style="width: 4rem; height: 4rem; color: var(--muted-foreground); margin-bottom: 1rem;"></i>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--foreground);">No teams yet</h3>
+                    <p style="color: var(--muted-foreground); margin-bottom: 1.5rem;">Create or join a team to start your hackathon journey!</p>
+                    <button class="btn btn-primary" onclick="showCreateTeamForm()">
+                        <i data-lucide="plus" style="width: 1rem; height: 1rem;"></i>
+                        Create Your First Team
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Team Modal -->
+    <div id="create-team-modal" class="modal" style="display: none;">
+        <div class="modal-content card" style="max-width: 600px; margin: 2rem auto; padding: 2rem;">
+            <div class="card-header" style="text-align: center; margin-bottom: 2rem;">
+                <h2 class="card-title">Create New Team</h2>
+                <p class="card-description">Set up your hackathon team workspace and invite collaborators</p>
+            </div>
+            <form id="create-team-form" class="form">
+                <div class="form-group">
+                    <label for="team-name">Team Name</label>
+                    <input type="text" id="team-name" placeholder="Awesome Hackers" required maxlength="50">
+                    <div style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.25rem;">Choose a memorable name that represents your team</div>
+                </div>
+                <div class="form-group">
+                    <label for="team-description">Team Description</label>
+                    <textarea id="team-description" placeholder="Brief description of your team and project goals" rows="3" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); resize: vertical; font-family: inherit;" maxlength="200"></textarea>
+                    <div style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.25rem;">Describe what your team aims to build</div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hackathon-name">Hackathon/Competition</label>
+                        <input type="text" id="hackathon-name" placeholder="Global Hack Week 2024" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="team-size">Expected Team Size</label>
+                        <select id="team-size" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--background);">
+                            <option value="2-3">2-3 members</option>
+                            <option value="4-5" selected>4-5 members</option>
+                            <option value="6-8">6-8 members</option>
+                            <option value="9+">9+ members</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="project-category">Project Category (Optional)</label>
+                    <select id="project-category" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--background);">
+                        <option value="">Select category</option>
+                        <option value="web">Web Development</option>
+                        <option value="mobile">Mobile App</option>
+                        <option value="ai-ml">AI/Machine Learning</option>
+                        <option value="blockchain">Blockchain</option>
+                        <option value="iot">IoT/Hardware</option>
+                        <option value="game">Game Development</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div style="background: var(--muted); padding: 1rem; border-radius: var(--radius); margin: 1.5rem 0;">
+                    <div style="display: flex; align-items: start; gap: 0.75rem;">
+                        <i data-lucide="lightbulb" style="width: 1.25rem; height: 1.25rem; color: var(--primary); margin-top: 0.125rem;"></i>
+                        <div>
+                            <div style="font-weight: 600; color: var(--foreground); margin-bottom: 0.25rem;">Pro Tip</div>
+                            <div style="font-size: 0.875rem; color: var(--muted-foreground);">
+                                After creating your team, you'll get an invitation code to share with potential members.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn btn-outline btn-full" onclick="hideCreateTeamForm()">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-full" id="create-team-btn">
+                        <span class="btn-text">
+                            <i data-lucide="rocket" style="width: 1rem; height: 1rem;"></i>
+                            Create Team
+                        </span>
+                        <span class="btn-loading hidden">
+                            <i data-lucide="loader-2" style="width: 1rem; height: 1rem; animation: spin 1s linear infinite;"></i>
+                            Creating...
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Join Team Modal -->
+    <div id="join-team-modal" class="modal" style="display: none;">
+        <div class="modal-content card" style="max-width: 500px; margin: 2rem auto; padding: 2rem;">
+            <div class="card-header" style="text-align: center; margin-bottom: 1.5rem;">
+                <h2 class="card-title">Join Team</h2>
+                <p class="card-description">Enter the team invitation code or link to join</p>
+            </div>
+            <form id="join-team-form" class="form">
+                <div class="form-group">
+                    <label for="invite-code">Invitation Code</label>
+                    <input type="text" id="invite-code" placeholder="e.g., HACK2024-ABC123" required style="text-transform: uppercase;">
+                    <div style="font-size: 0.75rem; color: var(--muted-foreground); margin-top: 0.25rem;">
+                        Enter the code shared by your team leader
+                    </div>
+                </div>
+                <div style="background: var(--muted); padding: 1rem; border-radius: var(--radius); margin: 1.5rem 0;">
+                    <div style="display: flex; align-items: start; gap: 0.75rem;">
+                        <i data-lucide="info" style="width: 1.25rem; height: 1.25rem; color: var(--primary); margin-top: 0.125rem;"></i>
+                        <div>
+                            <div style="font-weight: 600; color: var(--foreground); margin-bottom: 0.25rem;">Demo Mode</div>
+                            <div style="font-size: 0.875rem; color: var(--muted-foreground);">
+                                Try any code like "DEMO123" to join a sample team
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-outline btn-full" onclick="hideJoinTeamForm()">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-full" id="join-team-btn">
+                        <span class="btn-text">
+                            <i data-lucide="user-plus" style="width: 1rem; height: 1rem;"></i>
+                            Join Team
+                        </span>
+                        <span class="btn-loading hidden">
+                            <i data-lucide="loader-2" style="width: 1rem; height: 1rem; animation: spin 1s linear infinite;"></i>
+                            Joining...
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Check if user is logged in
+        if (!localStorage.getItem('isLoggedIn')) {
+            window.location.href = 'login.html';
+        }
+
+        let currentUser = JSON.parse(localStorage.getItem('user'));
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateUserInfo();
+            loadTeams();
+            updateQuickStats();
+        });
+
+        function updateUserInfo() {
+            if (currentUser) {
+                document.getElementById('user-name').textContent = currentUser.name || 'User';
+                document.getElementById('menu-user-name').textContent = currentUser.name || 'User';
+                document.getElementById('menu-user-email').textContent = currentUser.email || '';
+            }
+        }
+
+        function showUserMenu() {
+            const menu = document.getElementById('user-menu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Close user menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('user-menu');
+            const button = e.target.closest('[onclick="showUserMenu()"]');
+            if (!button && !menu.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('user');
+            localStorage.removeItem('isLoggedIn');
+            showToast('Signed out successfully', 'success');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+        }
+
+        function showCreateTeamForm() {
+            document.getElementById('create-team-modal').style.display = 'block';
+        }
+
+        function hideCreateTeamForm() {
+            document.getElementById('create-team-modal').style.display = 'none';
+            document.getElementById('create-team-form').reset();
+        }
+
+        function showJoinTeamForm() {
+            document.getElementById('join-team-modal').style.display = 'block';
+        }
+
+        function hideJoinTeamForm() {
+            document.getElementById('join-team-modal').style.display = 'none';
+            document.getElementById('join-team-form').reset();
+        }
+
+        function showProfileModal() {
+            showToast('Profile settings coming soon!', 'info');
+            document.getElementById('user-menu').style.display = 'none';
+        }
+
+        function showPreferencesModal() {
+            showToast('Preferences coming soon!', 'info');
+            document.getElementById('user-menu').style.display = 'none';
+        }
+
+        // Handle create team form
+        document.getElementById('create-team-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const teamName = document.getElementById('team-name').value.trim();
+            const teamDescription = document.getElementById('team-description').value.trim();
+            const hackathonName = document.getElementById('hackathon-name').value.trim();
+            const teamSize = document.getElementById('team-size').value;
+            const projectCategory = document.getElementById('project-category').value;
+            const btn = document.getElementById('create-team-btn');
+            
+            if (!teamName || !hackathonName) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            btn.classList.add('loading');
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                const newTeam = {
+                    id: Date.now(),
+                    name: teamName,
+                    description: teamDescription,
+                    hackathon: hackathonName,
+                    teamSize: teamSize,
+                    category: projectCategory,
+                    createdBy: currentUser.email,
+                    createdAt: new Date().toISOString(),
+                    status: 'active',
+                    inviteCode: generateInviteCode(),
+                    members: [{
+                        id: currentUser.email,
+                        name: currentUser.name,
+                        email: currentUser.email,
+                        role: 'Team Leader',
+                        joinedAt: new Date().toISOString()
+                    }],
+                    tasks: [],
+                    resources: [],
+                    projects: []
+                };
+                
+                if (!currentUser.teams) currentUser.teams = [];
+                currentUser.teams.push(newTeam);
+                
+                localStorage.setItem('user', JSON.stringify(currentUser));
+                
+                showToast(`Team "${teamName}" created successfully! Invite code: ${newTeam.inviteCode}`, 'success');
+                
+                hideCreateTeamForm();
+                loadTeams();
+                updateQuickStats();
+                
+                btn.classList.remove('loading');
+                btn.disabled = false;
+                
+                // Redirect to dashboard after a delay
+                setTimeout(() => {
+                    window.location.href = `dashboard.html?team=${newTeam.id}`;
+                }, 2000);
+            }, 1500);
+        });
+
+        // Handle join team form
+        document.getElementById('join-team-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const inviteCode = document.getElementById('invite-code').value.trim().toUpperCase();
+            const btn = document.getElementById('join-team-btn');
+            
+            if (!inviteCode) {
+                showToast('Please enter an invitation code', 'error');
+                return;
+            }
+            
+            btn.classList.add('loading');
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                // Simulate joining a team
+                const newTeam = {
+                    id: Date.now(),
+                    name: "Demo Team",
+                    description: "Joined via invitation code: " + inviteCode,
+                    hackathon: "Global Hack Week 2024",
+                    teamSize: "4-5",
+                    category: "web",
+                    createdBy: "demo@example.com",
+                    createdAt: new Date().toISOString(),
+                    status: 'active',
+                    inviteCode: inviteCode,
+                    members: [{
+                        id: currentUser.email,
+                        name: currentUser.name,
+                        email: currentUser.email,
+                        role: 'Team Member',
+                        joinedAt: new Date().toISOString()
+                    }],
+                    tasks: [],
+                    resources: [],
+                    projects: []
+                };
+                
+                if (!currentUser.teams) currentUser.teams = [];
+                currentUser.teams.push(newTeam);
+                
+                localStorage.setItem('user', JSON.stringify(currentUser));
+                
+                showToast(`Successfully joined team with code: ${inviteCode}`, 'success');
+                
+                hideJoinTeamForm();
+                loadTeams();
+                updateQuickStats();
+                
+                btn.classList.remove('loading');
+                btn.disabled = false;
+                
+                // Redirect to dashboard after a delay
+                setTimeout(() => {
+                    window.location.href = `dashboard.html?team=${newTeam.id}`;
+                }, 2000);
+            }, 1500);
+        });
+
+        function generateInviteCode() {
+            const prefix = 'HACK2024';
+            const suffix = Math.random().toString(36).substring(2, 8).toUpperCase();
+            return `${prefix}-${suffix}`;
+        }
+
+        function loadTeams() {
+            const teamsList = document.getElementById('teams-list');
+            const noTeamsMessage = document.getElementById('no-teams-message');
+            const filter = document.getElementById('team-filter').value;
+            
+            if (!currentUser.teams || currentUser.teams.length === 0) {
+                teamsList.style.display = 'none';
+                noTeamsMessage.style.display = 'block';
+                return;
+            }
+            
+            let filteredTeams = currentUser.teams;
+            
+            // Apply filter
+            switch (filter) {
+                case 'active':
+                    filteredTeams = currentUser.teams.filter(team => team.status === 'active');
+                    break;
+                case 'completed':
+                    filteredTeams = currentUser.teams.filter(team => team.status === 'completed');
+                    break;
+                case 'leader':
+                    filteredTeams = currentUser.teams.filter(team => team.createdBy === currentUser.email);
+                    break;
+            }
+            
+            if (filteredTeams.length === 0) {
+                teamsList.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--muted-foreground);">No teams match the selected filter.</div>';
+                teamsList.style.display = 'block';
+                noTeamsMessage.style.display = 'none';
+                return;
+            }
+            
+            teamsList.style.display = 'grid';
+            noTeamsMessage.style.display = 'none';
+            
+            teamsList.innerHTML = filteredTeams.map(team => {
+                const memberCount = team.members?.length || 1;
+                const taskCount = team.tasks?.length || 0;
+                const isLeader = team.createdBy === currentUser.email;
+                
+                return `
+                    <div class="card team-card" style="padding: 1.5rem; cursor: pointer; transition: all 0.2s ease;" onclick="openTeamDashboard('${team.id}')">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <div style="flex: 1;">
+                                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+                                    <h3 style="font-size: 1.25rem; font-weight: 600; margin: 0; color: var(--foreground);">${team.name}</h3>
+                                    ${isLeader ? '<span class="badge" style="background: var(--primary); color: var(--primary-foreground); font-size: 0.75rem;">Leader</span>' : ''}
+                                </div>
+                                <p style="color: var(--muted-foreground); margin-bottom: 1rem; line-height: 1.4;">
+                                    ${team.description || 'No description provided'}
+                                </p>
+                                <div style="display: flex; align-items: center; gap: 1.5rem; font-size: 0.875rem; color: var(--muted-foreground);">
+                                    <span style="display: flex; align-items: center; gap: 0.25rem;">
+                                        <i data-lucide="calendar" style="width: 1rem; height: 1rem;"></i>
+                                        ${team.hackathon}
+                                    </span>
+                                    <span style="display: flex; align-items: center; gap: 0.25rem;">
+                                        <i data-lucide="users" style="width: 1rem; height: 1rem;"></i>
+                                        ${memberCount} member${memberCount !== 1 ? 's' : ''}
+                                    </span>
+                                    <span style="display: flex; align-items: center; gap: 0.25rem;">
+                                        <i data-lucide="check-square" style="width: 1rem; height: 1rem;"></i>
+                                        ${taskCount} task${taskCount !== 1 ? 's' : ''}
+                                    </span>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-ghost" style="padding: 0.5rem;" onclick="event.stopPropagation(); showTeamOptions('${team.id}')" title="Team Options">
+                                    <i data-lucide="more-horizontal" style="width: 1rem; height: 1rem;"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="font-size: 0.875rem; color: var(--muted-foreground);">
+                                    Created ${new Date(team.createdAt).toLocaleDateString()}
+                                </span>
+                                ${team.category ? `<span class="badge" style="background: var(--muted); color: var(--muted-foreground); font-size: 0.75rem;">${team.category}</span>` : ''}
+                            </div>
+                            <span class="badge" style="background: ${team.status === 'active' ? '#10B981' : '#6B7280'}; color: white; font-size: 0.75rem;">
+                                ${team.status}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            lucide.createIcons();
+        }
+
+        function updateQuickStats() {
+            const teams = currentUser.teams || [];
+            const totalTeams = teams.length;
+            const activeProjects = teams.filter(t => t.status === 'active').length;
+            const totalTasks = teams.reduce((sum, team) => sum + (team.tasks?.length || 0), 0);
+            const totalMembers = teams.reduce((sum, team) => sum + (team.members?.length || 0), 0);
+            
+            document.getElementById('total-teams').textContent = totalTeams;
+            document.getElementById('active-projects').textContent = activeProjects;
+            document.getElementById('total-tasks').textContent = totalTasks;
+            document.getElementById('team-members').textContent = totalMembers;
+        }
+
+        function openTeamDashboard(teamId) {
+            window.location.href = `dashboard.html?team=${teamId}`;
+        }
+
+        function showTeamOptions(teamId) {
+            showToast('Team options coming soon!', 'info');
+        }
+
+        function refreshTeams() {
+            loadTeams();
+            showToast('Teams refreshed!', 'success');
+        }
+
+        // Handle team filter change
+        document.getElementById('team-filter').addEventListener('change', loadTeams);
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Auto-uppercase invite code input
+        document.getElementById('invite-code').addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'error' ? '#EF4444' : type === 'success' ? '#10B981' : '#3B82F6'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 10000;
+                font-family: inherit;
+                font-size: 14px;
+                max-width: 300px;
+                word-wrap: break-word;
+                opacity: 0;
+                transform: translateX(100%);
+                transition: all 0.3s ease;
+            `;
+            
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(0)';
+            }, 10);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 4000);
+        }
+    </script>
+
+    <style>
+        .team-action-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+        
+        .team-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+        
+        .user-menu {
+            animation: fadeIn 0.2s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackMate - The Ultimate Hackathon Platform</title>
+    <meta name="description" content="HackMate is the complete team hub for hackathons and competitions. Organize tasks, chat with AI, track progress, and never miss a deadline again.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="nav-brand">
+                <div class="nav-logo">
+                    <i data-lucide="zap"></i>
+                </div>
+                <span class="nav-title">HackMate</span>
+            </a>
+            <nav class="nav-menu">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#how-it-works" class="nav-link">How it Works</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+            </nav>
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-ghost">Sign In</a>
+                <a href="signup.html" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="badge">🚀 The Ultimate Hackathon Platform</div>
+                <h1 class="hero-title">
+                    Build winning teams.<br />
+                    <span class="text-primary">Ship faster together.</span>
+                </h1>
+                <p class="hero-description">
+                    HackMate is the complete team hub for hackathons and competitions. Organize tasks, chat with AI, track progress, and never miss a deadline again.
+                </p>
+                <div class="hero-actions">
+                    <a href="signup.html" class="btn btn-primary btn-lg">Start Your Team</a>
+                    <button class="btn btn-outline btn-lg" onclick="scrollToSection('features')">Watch Demo</button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">10k+</div>
+                        <div class="stat-label">Teams</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Hackathons</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">AI Support</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Everything your team needs to win</h2>
+                <p class="section-description">
+                    From idea to submission, HackMate provides all the tools to keep your team organized and productive.
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i data-lucide="users" class="feature-icon"></i>
+                    <h3 class="feature-title">Team Management</h3>
+                    <p class="feature-description">
+                        Create teams, assign roles, and manage members with clear responsibilities and permissions.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <i data-lucide="check-square" class="feature-icon"></i>
+                    <h3 class="feature-title">Smart Task Tracking</h3>
+                    <p class="feature-description">
+                        Create, assign, and track tasks with deadlines, priorities, and dependencies. Never lose track of progress.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <i data-lucide="message-square" class="feature-icon"></i>
+                    <h3 class="feature-title">Real-time Chat</h3>
+                    <p class="feature-description">
+                        Team chat, task-specific discussions, file sharing, and mentions to keep everyone in sync.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <i data-lucide="bot" class="feature-icon"></i>
+                    <h3 class="feature-title">AI Assistant</h3>
+                    <p class="feature-description">
+                        Get coding help, design feedback, strategy advice, and automated report generation from your team AI.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <i data-lucide="file-text" class="feature-icon"></i>
+                    <h3 class="feature-title">Resource Hub</h3>
+                    <p class="feature-description">
+                        Centralized file storage, link organization, and quick access to all your project resources.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <i data-lucide="timer" class="feature-icon"></i>
+                    <h3 class="feature-title">Time Management</h3>
+                    <p class="feature-description">
+                        Countdown timers, deadlines tracking, Pomodoro sessions, and calendar integration.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How it Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">From team to trophy in 4 steps</h2>
+                <p class="section-description">
+                    Simple workflow that scales from small teams to large competitions
+                </p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Create Team</h3>
+                    <p class="step-description">Set up your workspace, add team members, and define roles</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Plan & Organize</h3>
+                    <p class="step-description">Break down your project into tasks and set deadlines</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Build Together</h3>
+                    <p class="step-description">Collaborate with chat, AI assistance, and progress tracking</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Ship & Win</h3>
+                    <p class="step-description">Submit your project and generate winning reports</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" style="padding: 5rem 0; background: var(--background);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Loved by winning teams worldwide</h2>
+                <p class="section-description">
+                    See what hackathon champions are saying about HackMate
+                </p>
+            </div>
+
+            <div style="display: grid; gap: 2rem; max-width: 64rem; margin: 0 auto;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <div class="card" style="padding: 2rem;">
+                        <div style="display: flex; margin-bottom: 1rem;">
+                            <span style="color: #F59E0B;">★★★★★</span>
+                        </div>
+                        <p style="color: var(--muted-foreground); margin-bottom: 1.5rem; line-height: 1.6;">
+                            "HackMate transformed our team coordination. We went from chaotic to organized in minutes!"
+                        </p>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div style="width: 2.5rem; height: 2.5rem; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                A
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Alex Chen</div>
+                                <div style="font-size: 0.875rem; color: var(--muted-foreground);">Winner, Global Hack Week</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 2rem;">
+                        <div style="display: flex; margin-bottom: 1rem;">
+                            <span style="color: #F59E0B;">★★★★★</span>
+                        </div>
+                        <p style="color: var(--muted-foreground); margin-bottom: 1.5rem; line-height: 1.6;">
+                            "The AI assistant helped us debug our code and gave amazing suggestions. Game changer!"
+                        </p>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div style="width: 2.5rem; height: 2.5rem; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                S
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Sarah Johnson</div>
+                                <div style="font-size: 0.875rem; color: var(--muted-foreground);">1st Place, TechCrunch Disrupt</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="padding: 2rem;">
+                        <div style="display: flex; margin-bottom: 1rem;">
+                            <span style="color: #F59E0B;">★★★★★</span>
+                        </div>
+                        <p style="color: var(--muted-foreground); margin-bottom: 1.5rem; line-height: 1.6;">
+                            "Never missed a deadline again. The countdown timer kept our team focused and motivated."
+                        </p>
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <div style="width: 2.5rem; height: 2.5rem; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                M
+                            </div>
+                            <div>
+                                <div style="font-weight: 600;">Marcus Rodriguez</div>
+                                <div style="font-size: 0.875rem; color: var(--muted-foreground);">Winner, NASA Space Apps</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing" style="padding: 5rem 0; background: var(--muted);">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Simple, transparent pricing</h2>
+                <p class="section-description">
+                    Choose the plan that works best for your team
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 48rem; margin: 0 auto;">
+                <div class="card" style="padding: 2rem; text-align: center; position: relative;">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Free</h3>
+                    <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem;">$0</div>
+                    <p style="color: var(--muted-foreground); margin-bottom: 2rem;">Perfect for small teams</p>
+                    <ul style="text-align: left; margin-bottom: 2rem; list-style: none;">
+                        <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i data-lucide="check" style="width: 1rem; height: 1rem; color: #10B981;"></i>
+                            Up to 5 team members
+                        </li>
+                        <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i data-lucide="check" style="width: 1rem; height: 1rem; color: #10B981;"></i>
+                            Basic task management
+                        </li>
+                        <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i data-lucide="check" style="width: 1rem; height: 1rem; color: #10B981;"></i>
+                            Team chat
+                        </li>
+                        <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i data-lucide="check" style="width: 1rem; height: 1rem; color: #10B981;"></i>
+                            Resource sharing
+                        </li>
+                    </ul>
+                    <a href="signup.html" class="btn btn-outline btn-full">Get Started</a>
+                </div>
+
+                <div class="card" style="padding: 2rem; text-align: center; position: relative; border: 2px solid var(--primary);">
+                    <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--primary); color: var(--primary-foreground); padding: 0.25rem 1rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 600;">
+                        Most Popular
+                    </div>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem;">Pro</h3>
+                    <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem;">$9</div>
+                    <p style="color: var(--muted-foreground); margin-bottom: 2rem;">Per team per month</p>
+                    <ul style="text-align: left; margin-bottom: 2rem; list-style: none;">
+                        <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i data-lucide="check" style="width: 1rem; height: 1rem; color: #10B981;"></i>
+                            Unlimited team members
+                        </li>
+                        <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i data-lucide="check" style="width: 1rem; height: 1rem; color: #10B981;"></i>
+                            Advanced task management
+                        </li>
+                        <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i data-lucide="check" style="width: 1rem; height: 1rem; color: #10B981;"></i>
+                            AI Assistant
+                        </li>
+                        <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i data-lucide="check" style="width: 1rem; height: 1rem; color: #10B981;"></i>
+                            Analytics & Reports
+                        </li>
+                        <li style="margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i data-lucide="check" style="width: 1rem; height: 1rem; color: #10B981;"></i>
+                            Priority support
+                        </li>
+                    </ul>
+                    <a href="signup.html" class="btn btn-primary btn-full">Start Free Trial</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to win your next hackathon?</h2>
+                <p class="cta-description">
+                    Join thousands of teams already using HackMate to build better, faster, and together.
+                </p>
+                <div class="cta-actions">
+                    <a href="signup.html" class="btn btn-secondary btn-lg">Start Free Team</a>
+                    <button class="btn btn-outline-light btn-lg" onclick="showContactModal()">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="nav-brand">
+                        <div class="nav-logo">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <span class="nav-title">HackMate</span>
+                    </a>
+                    <p class="footer-description">
+                        The complete hackathon team hub for winning teams.
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <div>
+                        <h4>Product</h4>
+                        <ul>
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#pricing">Pricing</a></li>
+                            <li><a href="#">API</a></li>
+                            <li><a href="#">Integrations</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Company</h4>
+                        <ul>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Press</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Support</h4>
+                        <ul>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Status</a></li>
+                            <li><a href="#">Security</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 HackMate. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="modal" style="display: none;">
+        <div class="modal-content card" style="max-width: 400px; margin: 2rem auto; padding: 2rem;">
+            <div class="card-header" style="text-align: center; margin-bottom: 1.5rem;">
+                <h2 class="card-title">Contact Sales</h2>
+                <p class="card-description">Get in touch with our sales team</p>
+            </div>
+            <form id="contact-form" class="form">
+                <div class="form-group">
+                    <label for="contact-name">Full Name</label>
+                    <input type="text" id="contact-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-email">Email</label>
+                    <input type="email" id="contact-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-company">Company</label>
+                    <input type="text" id="contact-company">
+                </div>
+                <div class="form-group">
+                    <label for="contact-message">Message</label>
+                    <textarea id="contact-message" rows="4" placeholder="Tell us about your team and needs"></textarea>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="button" class="btn btn-outline btn-full" onclick="hideContactModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary btn-full">Send Message</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Smooth scrolling for anchor links
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Contact modal functions
+        function showContactModal() {
+            document.getElementById('contact-modal').style.display = 'block';
+        }
+
+        function hideContactModal() {
+            document.getElementById('contact-modal').style.display = 'none';
+        }
+
+        // Handle contact form submission
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simulate form submission
+            alert('Thank you for your interest! Our sales team will contact you within 24 hours.');
+            hideContactModal();
+            this.reset();
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('contact-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideContactModal();
+            }
+        });
+
+        // Add scroll animations
+        function handleScrollAnimations() {
+            const cards = document.querySelectorAll('.feature-card, .step, .card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    card.classList.add('animate-fadeIn');
+                }
+            });
+        }
+
+        // Run animations on scroll
+        window.addEventListener('scroll', handleScrollAnimations);
+        document.addEventListener('DOMContentLoaded', handleScrollAnimations);
+
+        // Update stats with animation
+        function animateStats() {
+            const stats = document.querySelectorAll('.stat-number');
+            stats.forEach(stat => {
+                const finalValue = stat.textContent;
+                const numValue = parseInt(finalValue.replace(/[^0-9]/g, ''));
+                let currentValue = 0;
+                const increment = numValue / 50;
+                
+                const updateStat = () => {
+                    currentValue += increment;
+                    if (currentValue >= numValue) {
+                        stat.textContent = finalValue;
+                    } else {
+                        const displayValue = Math.floor(currentValue);
+                        if (finalValue.includes('k')) {
+                            stat.textContent = displayValue + 'k+';
+                        } else if (finalValue.includes('%')) {
+                            stat.textContent = displayValue + '%';
+                        } else {
+                            stat.textContent = displayValue + '+';
+                        }
+                        requestAnimationFrame(updateStat);
+                    }
+                };
+                
+                // Start animation when hero is visible
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            updateStat();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+                
+                observer.observe(stat.closest('.hero-stats'));
+            });
+        }
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', animateStats);
+    </script>
+</body>
+</html>
