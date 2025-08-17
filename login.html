@@ -97,7 +97,7 @@
         );
 
         // Go to dashboard
-        window.location.replace("dashboard.html");
+        window.location.replace("teams.html");
       } catch (error) {
         console.error("Sign-In Error:", error.code, error.message);
         alert("Error signing in: " + error.message);
@@ -117,7 +117,7 @@
 
     // 🔐 Route guard & smart redirects
     const PROTECTED = new Set(["teams.html", "profile.html", "dashboard.html", "resources.html"]);
-    const AUTH_PAGES = new Set(["login.html", "signup.html", "index.html", "signin.html"]);
+    const AUTH_PAGES = new Set(["login.html", "signup.html", "index.html"]);
 
     // current file name, default to index.html if empty
     const currentPage = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
@@ -132,7 +132,7 @@
         window.location.replace("login.html");
       } else if (isLoggedIn && isAuthPage) {
         // Already logged in but on login/signup/index → send to dashboard
-        window.location.replace("dashboard.html");
+        window.location.replace("teams.html");
       }
       // Otherwise, stay on the current page
     });
@@ -150,3 +150,4 @@
   </script>
 </body>
 </html>
+
