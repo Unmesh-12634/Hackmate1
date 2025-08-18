@@ -1,277 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In - HackMate</title>
-    <meta name="description" content="Sign in to your HackMate account and access your team workspace.">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - HackMate</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
 </head>
-<body>
-    <div class="auth-page">
-        <div class="auth-container">
-            <div class="auth-header">
-                <a href="index.html" class="nav-brand">
-                    <div class="nav-logo"><i data-lucide="zap"></i></div>
-                    <span class="nav-title">HackMate</span>
-                </a>
-                <h1>Welcome back</h1>
-                <p>Sign in to your team workspace</p>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Sign In</h2>
-                    <p class="card-description">Enter your credentials to access your team dashboard</p>
-                </div>
-                <div class="card-content">
-                    <form id="login-form" class="form">
-                        <div class="form-group">
-                            <label for="login-email">Email</label>
-                            <input type="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
-                            <div id="email-error" class="error-message" style="display: none;"></div>
-                        </div>
-                        <div class="form-group">
-                            <label for="login-password">Password</label>
-                            <div style="position: relative;">
-                                <input type="password" id="login-password" required autocomplete="current-password">
-                                <button type="button" id="toggle-password" class="icon-btn">
-                                    <i data-lucide="eye" style="width: 1rem; height: 1rem;"></i>
-                                </button>
-                            </div>
-                            <div id="password-error" class="error-message" style="display: none;"></div>
-                        </div>
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin: 1rem 0;">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="remember-me">
-                                <span>Remember me</span>
-                            </label>
-                            <a href="#" class="link" onclick="showForgotPasswordModal()">Forgot password?</a>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-full" id="login-btn">
-                            <span class="btn-text">Sign In</span>
-                            <span class="btn-loading hidden">
-                                <i data-lucide="loader-2" class="spinner"></i>
-                                Signing In...
-                            </span>
-                        </button>
-                    </form>
-                    <div class="auth-links">
-                        <div class="divider"><span>or continue with</span></div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                            <button class="btn btn-outline" onclick="signInWithGoogle()">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                                Google
-                            </button>
-                            <button class="btn btn-outline" onclick="signInWithGitHub()">
-                                <i data-lucide="github" style="width: 1rem; height: 1rem;"></i>
-                                GitHub
-                            </button>
-                        </div>
-                    </div>
-                    <div class="auth-switch">
-                        <span>Don't have an account? </span>
-                        <a href="signup.html" class="link">Sign up</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="forgot-password-modal" class="modal" style="display: none;">
-        <div class="modal-content card">
-            <div class="card-header">
-                <h2 class="card-title">Reset Password</h2>
-                <p class="card-description">Enter your email for a reset link</p>
-            </div>
-            <form id="forgot-password-form" class="form">
-                <div class="form-group">
-                    <label for="reset-email">Email Address</label>
-                    <input type="email" id="reset-email" placeholder="you@example.com" required>
-                </div>
-                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                    <button type="button" class="btn btn-outline btn-full" onclick="hideForgotPasswordModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary btn-full">Send Reset Link</button>
-                </div>
-            </form>
-        </div>
+<body class="auth-page">
+
+  <div class="auth-container">
+    <div class="auth-header">
+      <a href="index.html" class="nav-brand">
+        <div class="nav-logo"><i data-lucide="zap"></i></div>
+        <span class="nav-title">HackMate</span>
+      </a>
+      <h1>Welcome Back</h1>
+      <p>Sign in with Google to continue.</p>
     </div>
 
-</body>
-<script type="module">
-    // --- SDK IMPORTS ---
+    <div class="card">
+      <div class="card-content">
+        <!-- Google Login Button -->
+        <button type="button" class="btn btn-outline btn-full" onclick="signInWithGoogle()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Sign in with Google
+        </button>
+
+        <div class="auth-switch" style="margin-top: 1.5rem;">
+          <span>Don't have an account? </span>
+          <a href="signup.html" class="link">Sign up</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase Auth -->
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
     import {
-        getAuth,
-        onAuthStateChanged,
-        signInWithEmailAndPassword,
-        signInWithPopup,
-        GoogleAuthProvider,
-        GithubAuthProvider,
-        sendPasswordResetEmail
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      signOut,
+      onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js";
     import {
-        getFirestore,
-        doc,
-        setDoc,
-        serverTimestamp
+      getFirestore,
+      doc,
+      setDoc,
+      serverTimestamp
     } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js";
 
-    // --- FIREBASE CONFIG & INITIALIZATION ---
+    // 🔧 Firebase config
     const firebaseConfig = {
-        apiKey: "AIzaSyCYV3V0KhHjGcQhmH3Dsg9Se2PFOf5G0qY",
-        authDomain: "hackmate-f9127.firebaseapp.com",
-        databaseURL: "https://hackmate-f9127-default-rtdb.firebaseio.com",
-        projectId: "hackmate-f9127",
-        storageBucket: "hackmate-f9127.appspot.com",
-        messagingSenderId: "617200538584",
-        appId: "1:617200538584:web:0204c1ce29dbe8caf798ad",
-        measurementId: "G-XDMK184368"
+      apiKey: "AIzaSyCYV3V0KhHjGcQhmH3Dsg9Se2PFOf5G0qY",
+      authDomain: "hackmate-f9127.firebaseapp.com",
+      databaseURL: "https://hackmate-f9127-default-rtdb.firebaseio.com",
+      projectId: "hackmate-f9127",
+      storageBucket: "hackmate-f9127.appspot.com",
+      messagingSenderId: "617200538584",
+      appId: "1:617200538584:web:0204c1ce29dbe8caf798ad",
+      measurementId: "G-XDMK184368"
     };
+
+    // 🚀 Init
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const googleProvider = new GoogleAuthProvider();
-    const githubProvider = new GithubAuthProvider();
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
 
-    // --- ROUTE PROTECTION ---
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const authPages = ['login.html', 'signup.html', 'index.html'];
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            if (authPages.includes(currentPage)) {
-                window.location.replace('teams.html');
-            }
-        }
-    });
-
-    // --- AUTH FUNCTIONS ---
-    async function handleLogin(event) {
-        event.preventDefault();
-        if (!validateForm()) return;
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
-        const btn = document.getElementById('login-btn');
-        setLoading(btn, true);
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-        } catch (error) {
-            handleAuthError(error);
-        } finally {
-            setLoading(btn, false);
-        }
-    }
+    // 🟢 Login
     async function signInWithGoogle() {
-        try {
-            const result = await signInWithPopup(auth, googleProvider);
-            await saveUserProfile(result.user);
-        } catch (error) {
-            handleAuthError(error);
-        }
-    }
-    async function signInWithGitHub() {
-        try {
-            const result = await signInWithPopup(auth, githubProvider);
-            await saveUserProfile(result.user);
-        } catch (error) {
-            handleAuthError(error);
-        }
-    }
-    async function handleForgotPassword(event) {
-        event.preventDefault();
-        const email = document.getElementById('reset-email').value;
-        if (!email || !isValidEmail(email)) return showToast('Please enter a valid email.', 'error');
-        try {
-            await sendPasswordResetEmail(auth, email);
-            showToast('Password reset link sent!', 'success');
-            hideForgotPasswordModal();
-        } catch (error) {
-            handleAuthError(error);
-        }
-    }
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
 
-    // --- HELPER FUNCTIONS ---
-    async function saveUserProfile(user) {
-        const userRef = doc(db, "users", user.uid);
-        const profile = {
+        // Save/merge user profile
+        await setDoc(
+          doc(db, "users", user.uid),
+          {
+            name: user.displayName || "",
+            email: user.email || "",
+            avatar: user.photoURL || "",
             uid: user.uid,
-            name: user.displayName,
-            email: user.email,
-            avatar: user.photoURL,
-            lastLogin: serverTimestamp()
-        };
-        await setDoc(userRef, profile, { merge: true });
-    }
-    function handleAuthError(error) {
-        console.error("Auth Error:", error.code);
-        const message = {
-            'auth/user-not-found': 'Invalid email or password.',
-            'auth/wrong-password': 'Invalid email or password.',
-            'auth/invalid-credential': 'Invalid email or password.',
-            'auth/popup-closed-by-user': null
-        }[error.code] || 'An authentication error occurred.';
-        if (message) showToast(message, 'error');
+            joinedAt: serverTimestamp()
+          },
+          { merge: true }
+        );
+
+        // Go to dashboard
+        window.location.replace("teams.html");
+
+      } catch (error) {
+        console.error("Sign-In Error:", error.code, error.message);
+        alert("Error signing in: " + error.message);
+      }
     }
 
-    // --- UI LOGIC ---
-    function validateForm() {
-        let isValid = true;
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
-        document.getElementById('email-error').style.display = 'none';
-        document.getElementById('password-error').style.display = 'none';
+    // 🔴 Logout
+    async function logout() {
+      try {
+        await signOut(auth);
+        window.location.replace("login.html"); // ✅ fixed
+      } catch (error) {
+        console.error("Sign Out Error:", error);
+      }
+    }
 
-        if (!email || !isValidEmail(email)) {
-            showError('email-error', 'Please enter a valid email address');
-            isValid = false;
+    // 🔐 Route Guard
+    onAuthStateChanged(auth, (user) => {
+     const protectedPages = ["teams.html", "profile.html", "resources.html"];
+const authPages = ["login.html", "signup.html", "index.html"];
+
+if (!user && protectedPages.includes(path)) {
+  window.location.replace("login.html");
+} else if (user && authPages.includes(path)) {
+  window.location.replace("teams.html");
+}
+        const path = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
+    
+        if (!user && protectedPages.includes(path)) {
+            if (path !== "login.html") window.location.replace("login.html");
+        } else if (user && authPages.includes(path)) {
+            if (path !== "teams.html") window.location.replace("teams.html");
         }
-        if (!password) {
-            showError('password-error', 'Password is required');
-            isValid = false;
-        }
-        return isValid;
-    }
-    function showError(elementId, message) {
-        const el = document.getElementById(elementId);
-        el.textContent = message;
-        el.style.display = 'block';
-    }
-    function isValidEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); }
-    function setLoading(button, isLoading) {
-        button.disabled = isLoading;
-        button.querySelector('.btn-text').classList.toggle('hidden', isLoading);
-        button.querySelector('.btn-loading').classList.toggle('hidden', !isLoading);
-    }
-    function showForgotPasswordModal() { document.getElementById('forgot-password-modal').style.display = 'block'; }
-    function hideForgotPasswordModal() { document.getElementById('forgot-password-modal').style.display = 'none'; }
-    function showToast(message, type = 'info') {
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        setTimeout(() => { toast.remove(); }, 4000);
-    }
 
-    // --- INITIALIZATION ---
-    window.signInWithGoogle = signInWithGoogle;
-    window.signInWithGitHub = signInWithGitHub;
-    window.showForgotPasswordModal = showForgotPasswordModal;
-    window.hideForgotPasswordModal = hideForgotPasswordModal;
-
-    document.getElementById('login-form').addEventListener('submit', handleLogin);
-    document.getElementById('forgot-password-form').addEventListener('submit', handleForgotPassword);
-
-    document.getElementById('toggle-password').addEventListener('click', function() {
-        const input = document.getElementById('login-password');
-        const icon = this.querySelector('i');
-        const isPassword = input.type === 'password';
-        input.type = isPassword ? 'text' : 'password';
-        icon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
-        lucide.createIcons();
     });
 
-    lucide.createIcons();
-</script>
+    window.signInWithGoogle = signInWithGoogle;
+    window.logout = logout;
+  </script>
+
+  <!-- Lucide Icons -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.lucide) lucide.createIcons();
+    });
+  </script>
+</body>
 </html>
